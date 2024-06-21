@@ -1,5 +1,5 @@
 const swaggerJsdoc = require('swagger-jsdoc');
-const swaggerDocument = require('../../swagger.json');
+const swaggerDocument = require('../swagger.json');
 
 swaggerDocument.servers[0].url = process.env.LAMBDA_URL || 'http://localhost:3000';
 const options = {
