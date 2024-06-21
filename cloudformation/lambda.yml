@@ -59,6 +59,7 @@ Resources:
   LambdaLayer:
     Type: AWS::Lambda::LayerVersion
     Properties:
+      LayerName: !Sub "${AWS::StackName}-${SourceCommit}"
       CompatibleRuntimes:
         - nodejs18.x
       Content:
