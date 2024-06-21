@@ -81,9 +81,9 @@ Resources:
       Principal: '*'
       FunctionUrlAuthType: NONE
 
-  Outputs:
-    LambdaFunctionUrl:
-      Description: "URL for the Lambda function"
-      Value: !GetAtt LambdaUrl.FunctionUrl
-      Export:
-        Name: LambdaFunctionUrl
+Outputs:
+  LambdaFunctionUrl:
+    Description: "URL for the Lambda function"
+    Value: !GetAtt LambdaUrl.FunctionUrl
+    Export:
+      Name: LambdaFunctionUrl
