@@ -45,3 +45,10 @@ jobs:
           aws s3 cp dependencies.zip s3://node-sort-bucket/dependencies.zip
           cd src && zip -r lambda.zip .
           aws s3 cp lambda.zip s3://node-sort-bucket/lambda.zip
+
+      - name: Deploy lambda
+        uses: aws-actions/aws-cloudformation-github-deploy@v1
+        with:
+          name: node-sort-lambda
+          template: cloudformation/lambda.yml
+          no-fail-on-empty-changeset: 1
