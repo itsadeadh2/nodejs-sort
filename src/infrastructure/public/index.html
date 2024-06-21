@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>NodeJS Entries Sorter</title>
+    <!-- Bootstrap CSS -->
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        body, html {
+            height: 100%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+        .container {
+            width: 800px;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+    </style>
+</head>
+<body>
+<div class="container bg-light">
+    <h2 class="text-center mb-4">NodeJS Entries Sorter</h2>
+    <div class="card mb-4">
+        <div class="card-body">
+            <h5 class="card-title">Welcome to the NodeJS Entries Sorter</h5>
+            <p class="card-text">
+                This project was created by <a href="https://www.linkedin.com/in/barbosathiagodev/" target="_blank"><i>Thiago Barbosa</i></a> after encountering a challenge on a CoderByte test. While the initial attempt may not have been successful, this project demonstrates a learning journey and showcases technical skills. 😊<br/>
+                <br/>
+                Built with <strong>NodeJS 18.x</strong>, <strong>JavaScript</strong>, and <strong>Express</strong>, this application is automatically deployed to an <strong>AWS Lambda Function</strong> using <strong>AWS CloudFormation</strong> and <strong>GitHub Actions</strong>.<br/>
+                <br/>
+                Although this solution may seem overengineered, it serves as a valuable exercise in deploying serverless applications and continuous integration. <br/>
+                <br/>
+                <i>Interested in the implementation? Check it out on <a href="https://github.com/itsadeadh2/nodejs-sort" target="_blank">GitHub</a>.</i>
+            </p>
+        </div>
+    </div>
+    <form id="jsonForm">
+        <div class="form-group">
+            <label for="jsonInput">Send your array of records:</label>
+            <textarea class="form-control" id="jsonInput" rows="10">[
+    {
+        "age": 22,
+        "name": "john dere"
+    },
+    {
+        "age": 22,
+        "name": "heisenberg",
+        "weapon": {
+            "type": "shotgun",
+            "size": null,
+            "power": null
+        }
+    },
+    {
+        "age": 22,
+        "friends": [
+            {
+                "name": "john dere",
+                "age": 22
+            }
+        ],
+        "name": "ronaldo"
+    }
+]</textarea>
+        </div>
+        <button type="submit" class="btn btn-primary btn-block">Submit</button>
+    </form>
+    <div class="form-group mt-4">
+        <label for="resultOutput">Result</label>
+        <textarea class="form-control" id="resultOutput" rows="10" readonly></textarea>
+    </div>
+</div>
+
+<!-- Bootstrap JS and dependencies -->
+<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+<!-- Axios for sending POST request -->
+<script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+<script>
+    document.getElementById('jsonForm').addEventListener('submit', function(event) {
+        event.preventDefault();
+        const jsonInput = document.getElementById('jsonInput').value;
+        try {
+            const jsonData = JSON.parse(jsonInput);
+            axios.post('/sort', jsonData)
+                .then(response => {
+                    const resultOutput = document.getElementById('resultOutput');
+                    resultOutput.value = JSON.stringify(response.data, null, 4);
+                })
+                .catch(error => {
+                    alert('Error submitting JSON');
+                    console.error(error);
+                });
+        } catch (e) {
+            alert('Invalid JSON input');
+        }
+    });
+</script>
+</body>
+</html>
