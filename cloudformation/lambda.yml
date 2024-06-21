@@ -65,21 +65,21 @@ Resources:
         S3Bucket: node-sort-bucket
         S3Key: dependencies.zip
 
-    # Lambda URL
-    LambdaUrl:
-      Type: AWS::Lambda::Url
-      Properties:
-        AuthType: NONE
-        TargetFunctionArn: !GetAtt MyLambdaFunction.Arn
+  # Lambda URL
+  LambdaUrl:
+    Type: AWS::Lambda::Url
+    Properties:
+      AuthType: NONE
+      TargetFunctionArn: !GetAtt MyLambdaFunction.Arn
 
-    # Lambda Permission for the URL
-    LambdaPermissionForUrl:
-      Type: AWS::Lambda::Permission
-      Properties:
-        FunctionName: !GetAtt MyLambdaFunction.Arn
-        Action: lambda:InvokeFunctionUrl
-        Principal: '*'
-        FunctionUrlAuthType: NONE
+  # Lambda Permission for the URL
+  LambdaPermissionForUrl:
+    Type: AWS::Lambda::Permission
+    Properties:
+      FunctionName: !GetAtt MyLambdaFunction.Arn
+      Action: lambda:InvokeFunctionUrl
+      Principal: '*'
+      FunctionUrlAuthType: NONE
 
   Outputs:
     LambdaFunctionUrl:
