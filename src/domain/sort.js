@@ -17,29 +17,33 @@ const removeDuplicates = (objects) => {
     return objects;
 }
 
+const isEmpty = (value) => {
+    return value !== 0 && !value
+}
+
 const removeEmptyProperties = (entry) => {
     Object.keys(entry).forEach((key) => {
         const property = entry[key];
 
         if (Array.isArray(property)) {
-            if (property.every((val) => !val)) {
+            if (property.every((val) => isEmpty(val))) {
                 delete entry[key]
                 return
             }
         } else if (typeof property === 'object') {
-            if (!property) {
+            if (isEmpty(property)) {
                 delete entry[key]
                 return
             }
             let shouldDelete = Object.keys(property).every((_key) => {
-                return !property[_key]
+                return isEmpty(property[_key])
             })
             if (shouldDelete) {
                 delete entry[key]
                 return
             }
         } else {
-            if (!property) {
+            if (isEmpty(property)) {
                 delete entry[key]
             }
         }
