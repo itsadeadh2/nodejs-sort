@@ -77,7 +77,7 @@ Resources:
         Fn::GetAtt:
           - MyApi
           - RootResourceId
-      PathPart: ""
+      PathPart: "/"
       RestApiId:
         Ref: MyApi
 
