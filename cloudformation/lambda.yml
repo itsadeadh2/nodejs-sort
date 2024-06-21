@@ -11,7 +11,7 @@ Resources:
     Type: AWS::Lambda::Function
     Properties:
       FunctionName: !Sub "${AWS::StackName}-${SourceCommit}"
-      Handler: index.handler
+      Handler: lambda.handler
       Role:
         Fn::GetAtt:
           - LambdaExecutionRole
