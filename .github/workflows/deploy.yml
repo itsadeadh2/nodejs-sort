@@ -30,3 +30,18 @@ jobs:
           name: node-sort
           template: cloudformation/s3.yml
           no-fail-on-empty-changeset: 1
+
+      - name: Install Node.js
+        uses: actions/setup-node@v2
+        with:
+          node-version: '18'
+
+      - name: Zip and Upload lambda
+        run: |
+          npm i
+          mkdir nodejs
+          mv node_modules nodejs/node_modules
+          zip -r dependencies.zip nodejs/
+          aws s3 cp dependencies.zip s3://node-sort-bucket/dependencies.zip
+          cd src && zip -r lambda.zip .
+          aws s3 cp lambda.zip s3://node-sort-bucket/lambda.zip

@@ -11,9 +11,9 @@ Resources:
           - LambdaExecutionRole
           - Arn
       Code:
-        S3Bucket: !Ref S3BucketName
-        S3Key: !Ref S3ObjectKey
-      Runtime: nodejs14.x
+        S3Bucket: node-sort-bucket
+        S3Key: lambda.zip
+      Runtime: nodejs18.x
       MemorySize: 128
       Timeout: 30
 
@@ -47,6 +47,15 @@ Resources:
       Action: lambda:InvokeFunction
       FunctionName: !GetAtt MyLambdaFunction.Arn
       Principal: apigateway.amazonaws.com
+
+  LambdaLayer:
+    Type: AWS::Lambda::LayerVersion
+    Properties:
+      CompatibleRuntimes:
+        - nodejs18.x
+      Content:
+        S3Bucket: node-sort-bucket
+        S3Key: dependencies.zip
 
   MyApi:
     Type: AWS::ApiGateway::RestApi
