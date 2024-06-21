@@ -65,81 +65,25 @@ Resources:
         S3Bucket: node-sort-bucket
         S3Key: dependencies.zip
 
-  MyApi:
-    Type: AWS::ApiGateway::RestApi
-    Properties:
-      Name: "MyApi"
+    # Lambda URL
+    LambdaUrl:
+      Type: AWS::Lambda::Url
+      Properties:
+        AuthType: NONE
+        TargetFunctionArn: !GetAtt MyLambdaFunction.Arn
 
-  RootResource:
-    Type: AWS::ApiGateway::Resource
-    Properties:
-      ParentId:
-        Fn::GetAtt:
-          - MyApi
-          - RootResourceId
-      PathPart: "/"
-      RestApiId:
-        Ref: MyApi
+    # Lambda Permission for the URL
+    LambdaPermissionForUrl:
+      Type: AWS::Lambda::Permission
+      Properties:
+        FunctionName: !GetAtt MyLambdaFunction.Arn
+        Action: lambda:InvokeFunctionUrl
+        Principal: '*'
+        FunctionUrlAuthType: NONE
 
-  MyApiProxyResource:
-    Type: AWS::ApiGateway::Resource
-    Properties:
-      ParentId:
-        Fn::GetAtt:
-          - MyApi
-          - RootResourceId
-      PathPart: "{proxy+}"
-      RestApiId:
-        Ref: MyApi
-
-  MyRootMethod:
-    Type: AWS::ApiGateway::Method
-    DependsOn: RootResource
-    Properties:
-      AuthorizationType: "NONE"
-      HttpMethod: "ANY"
-      ResourceId:
-        Ref: RootResource
-      RestApiId:
-        Ref: MyApi
-      Integration:
-        IntegrationHttpMethod: "POST"
-        Type: "AWS_PROXY"
-        Uri:
-          Fn::Sub:
-            - arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${MyLambdaFunction.Arn}/invocations
-            - MyLambdaFunction: !GetAtt MyLambdaFunction.Arn
-
-  MyApiProxyMethod:
-    Type: AWS::ApiGateway::Method
-    DependsOn: MyApiProxyResource
-    Properties:
-      AuthorizationType: "NONE"
-      HttpMethod: "ANY"
-      ResourceId:
-        Ref: MyApiProxyResource
-      RestApiId:
-        Ref: MyApi
-      Integration:
-        IntegrationHttpMethod: "POST"
-        Type: "AWS_PROXY"
-        Uri:
-          Fn::Sub:
-            - arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${MyLambdaFunction.Arn}/invocations
-            - MyLambdaFunction: !GetAtt MyLambdaFunction.Arn
-
-  MyApiDeployment:
-    Type: AWS::ApiGateway::Deployment
-    DependsOn:
-      - MyRootMethod
-      - MyApiProxyMethod
-    Properties:
-      RestApiId:
-        Ref: MyApi
-      StageName: "prod"
-
-Outputs:
-  ApiUrl:
-    Description: "API Gateway endpoint URL for Prod stage for MyApi"
-    Value:
-      Fn::Sub: "https://${MyApi}.execute-api.${AWS::Region}.amazonaws.com/prod/"
+  Outputs:
+    LambdaFunctionUrl:
+      Description: "URL for the Lambda function"
+      Value: !GetAtt LambdaUrl.FunctionUrl
+      Export:
+        Name: LambdaFunctionUrl
