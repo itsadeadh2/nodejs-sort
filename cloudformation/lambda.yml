@@ -1,8 +1,14 @@
 AWSTemplateFormatVersion: '2010-09-09'
 Description: Deploy Express.js app as Lambda with URL
 
+Parameters:
+  SourceCommit:
+    Type: String
+    Description: The commit that originated this deployment. Helps trigger new deploys to the lambda.
+
 Resources:
   MyLambdaFunction:
+    FunctionName: !Sub "${AWS::StackName}-${SourceCommit}"
     Type: AWS::Lambda::Function
     Properties:
       Handler: index.handler

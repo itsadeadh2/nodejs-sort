@@ -52,4 +52,5 @@ jobs:
         with:
           name: node-sort-lambda
           template: cloudformation/lambda.yml
+          parameter-overrides: "SourceCommit=${{ github.run_id }}"
           no-fail-on-empty-changeset: 1
