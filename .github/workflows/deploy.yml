@@ -43,6 +43,7 @@ jobs:
           mv node_modules nodejs/node_modules
           zip -r dependencies.zip nodejs/
           aws s3 cp dependencies.zip s3://node-sort-bucket/dependencies.zip
+          cp package.json src/package.json
           cd src && zip -r lambda.zip .
           aws s3 cp lambda.zip s3://node-sort-bucket/lambda.zip
 
