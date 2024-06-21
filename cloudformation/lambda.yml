@@ -8,9 +8,9 @@ Parameters:
 
 Resources:
   MyLambdaFunction:
-    FunctionName: !Sub "${AWS::StackName}-${SourceCommit}"
     Type: AWS::Lambda::Function
     Properties:
+      FunctionName: !Sub "${AWS::StackName}-${SourceCommit}"
       Handler: index.handler
       Role:
         Fn::GetAtt:
