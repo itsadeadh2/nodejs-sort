@@ -16,6 +16,8 @@ Resources:
       Runtime: nodejs18.x
       MemorySize: 128
       Timeout: 30
+      Layers:
+        - !Ref LambdaLayer
 
   LambdaExecutionRole:
     Type: AWS::IAM::Role
@@ -75,6 +77,7 @@ Resources:
 
   MyApiMethod:
     Type: AWS::ApiGateway::Method
+    DependsOn: MyApiResource
     Properties:
       AuthorizationType: "NONE"
       HttpMethod: "ANY"
@@ -92,6 +95,7 @@ Resources:
 
   MyApiDeployment:
     Type: AWS::ApiGateway::Deployment
+    DependsOn: MyApiMethod
     Properties:
       RestApiId:
         Ref: MyApi
